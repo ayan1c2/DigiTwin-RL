@@ -1,0 +1,292 @@
+@prefix : <https://example.org/krr#> .
+@prefix krr: <https://example.org/krr#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://example.org/krr>
+  a owl:Ontology ;
+  rdfs:label "KRR Ontology (Knowledge Representation & Reasoning)"@en ;
+  owl:versionInfo "0.1.0" ;
+  rdfs:comment "A lightweight, extensible OWL 2 ontology for modeling knowledge bases, statements, logics, and reasoning tasks and outcomes."@en
+.
+
+###########
+# CLASSES #
+###########
+
+krr:Entity a owl:Class ; rdfs:label "Entity"@en .
+krr:Agent a owl:Class ; rdfs:label "Agent"@en .
+krr:KnowledgeBase a owl:Class ; rdfs:label "Knowledge Base"@en .
+krr:Ontology a owl:Class ; rdfs:label "Ontology"@en ; rdfs:subClassOf krr:KnowledgeBase .
+krr:Vocabulary a owl:Class ; rdfs:label "Vocabulary"@en .
+
+krr:Statement a owl:Class ; rdfs:label "Statement"@en ; rdfs:comment "A reified assertion (axiom, fact, rule, claim), optionally with a formula string and truth value."@en .
+krr:Fact a owl:Class ; rdfs:subClassOf krr:Statement ; rdfs:label "Fact"@en .
+krr:Claim a owl:Class ; rdfs:subClassOf krr:Statement ; rdfs:label "Claim"@en .
+krr:Axiom a owl:Class ; rdfs:subClassOf krr:Statement ; rdfs:label "Axiom"@en .
+krr:Rule a owl:Class ; rdfs:subClassOf krr:Statement ; rdfs:label "Rule"@en .
+
+krr:Concept a owl:Class ; rdfs:label "Concept (Class)"@en .
+krr:Role a owl:Class ; rdfs:label "Role (Property)"@en .
+krr:Individual a owl:Class ; rdfs:label "Individual"@en .
+
+krr:Language a owl:Class ; rdfs:label "Language"@en .
+krr:Logic a owl:Class ; rdfs:label "Logic"@en .
+krr:InferenceRule a owl:Class ; rdfs:label "Inference Rule"@en .
+krr:Reasoner a owl:Class ; rdfs:label "Reasoner"@en .
+krr:Algorithm a owl:Class ; rdfs:label "Algorithm"@en .
+krr:ComplexityClass a owl:Class ; rdfs:label "Complexity Class"@en .
+
+krr:Proof a owl:Class ; rdfs:label "Proof"@en .
+krr:Justification a owl:Class ; rdfs:label "Justification"@en .
+krr:Explanation a owl:Class ; rdfs:label "Explanation"@en .
+krr:Evidence a owl:Class ; rdfs:label "Evidence"@en .
+krr:Observation a owl:Class ; rdfs:label "Observation"@en .
+krr:Dataset a owl:Class ; rdfs:label "Dataset"@en .
+krr:Source a owl:Class ; rdfs:label "Source"@en .
+krr:Document a owl:Class ; rdfs:label "Document"@en .
+
+krr:Model a owl:Class ; rdfs:label "Model (Semantic)"@en .
+krr:Interpretation a owl:Class ; rdfs:label "Interpretation"@en .
+krr:TruthValue a owl:Class ;
+  rdfs:label "Truth Value"@en ;
+  owl:oneOf ( krr:true krr:false krr:unknown krr:inconsistent )
+.
+
+krr:ReasoningTask a owl:Class ; rdfs:label "Reasoning Task"@en .
+krr:Classification a owl:Class ; rdfs:subClassOf krr:ReasoningTask ; rdfs:label "Classification"@en .
+krr:Realization a owl:Class ; rdfs:subClassOf krr:ReasoningTask ; rdfs:label "Realization"@en .
+krr:ConsistencyChecking a owl:Class ; rdfs:subClassOf krr:ReasoningTask ; rdfs:label "Consistency Checking"@en .
+krr:SatisfiabilityChecking a owl:Class ; rdfs:subClassOf krr:ReasoningTask ; rdfs:label "Satisfiability Checking"@en .
+krr:EntailmentChecking a owl:Class ; rdfs:subClassOf krr:ReasoningTask ; rdfs:label "Entailment Checking"@en .
+krr:QueryAnswering a owl:Class ; rdfs:subClassOf krr:ReasoningTask ; rdfs:label "Query Answering"@en .
+krr:Abduction a owl:Class ; rdfs:subClassOf krr:ReasoningTask ; rdfs:label "Abduction"@en .
+krr:Induction a owl:Class ; rdfs:subClassOf krr:ReasoningTask ; rdfs:label "Induction"@en .
+krr:ExplanationGeneration a owl:Class ; rdfs:subClassOf krr:ReasoningTask ; rdfs:label "Explanation Generation"@en .
+
+# Disjointness (non-exhaustive)
+[ a owl:AllDisjointClasses ; owl:members ( krr:Statement krr:Evidence krr:Reasoner krr:Logic krr:Language ) ] .
+[ a owl:AllDisjointClasses ; owl:members ( krr:Axiom krr:Rule krr:Fact krr:Claim ) ] .
+
+######################
+# OBJECT PROPERTIES  #
+######################
+
+krr:asserts a owl:ObjectProperty ;
+  rdfs:domain krr:Agent ; rdfs:range krr:Statement ;
+  rdfs:label "asserts"@en .
+
+krr:about a owl:ObjectProperty ;
+  rdfs:domain [ a owl:Class ; owl:unionOf ( krr:Statement krr:Evidence krr:Document ) ] ;
+  rdfs:range  krr:Entity ;
+  rdfs:label "about"@en .
+
+krr:hasAxiom a owl:ObjectProperty ;
+  rdfs:domain krr:Ontology ; rdfs:range krr:Axiom ;
+  rdfs:label "has axiom"@en .
+
+krr:hasRule a owl:ObjectProperty ;
+  rdfs:domain krr:KnowledgeBase ; rdfs:range krr:Rule ;
+  rdfs:label "has rule"@en .
+
+krr:hasFact a owl:ObjectProperty ;
+  rdfs:domain krr:KnowledgeBase ; rdfs:range krr:Fact ;
+  rdfs:label "has fact"@en .
+
+krr:hasStatement a owl:ObjectProperty ;
+  rdfs:domain krr:KnowledgeBase ; rdfs:range krr:Statement ;
+  rdfs:label "has statement"@en .
+
+krr:usesLogic a owl:ObjectProperty ;
+  rdfs:domain [ a owl:Class ; owl:unionOf ( krr:KnowledgeBase krr:Reasoner ) ] ;
+  rdfs:range  krr:Logic ;
+  rdfs:label "uses logic"@en .
+
+krr:usesLanguage a owl:ObjectProperty ;
+  rdfs:domain [ a owl:Class ; owl:unionOf ( krr:KnowledgeBase krr:Statement ) ] ;
+  rdfs:range  krr:Language ;
+  rdfs:label "uses language"@en .
+
+krr:usesVocabulary a owl:ObjectProperty ;
+  rdfs:domain krr:Ontology ; rdfs:range krr:Vocabulary ;
+  rdfs:label "uses vocabulary"@en .
+
+krr:supportsTask a owl:ObjectProperty ;
+  rdfs:domain [ a owl:Class ; owl:unionOf ( krr:Reasoner krr:Logic ) ] ;
+  rdfs:range  krr:ReasoningTask ;
+  rdfs:label "supports task"@en .
+
+krr:performsTask a owl:ObjectProperty ;
+  rdfs:domain krr:Reasoner ; rdfs:range krr:ReasoningTask ;
+  rdfs:label "performs task"@en .
+
+krr:answers a owl:ObjectProperty ;
+  rdfs:domain krr:Reasoner ; rdfs:range krr:Query ;
+  rdfs:label "answers"@en .
+
+krr:entails a owl:ObjectProperty , owl:TransitiveProperty ;
+  rdfs:domain krr:Statement ; rdfs:range krr:Statement ;
+  rdfs:label "entails"@en .
+
+krr:contradicts a owl:ObjectProperty , owl:SymmetricProperty , owl:IrreflexiveProperty ;
+  rdfs:domain krr:Statement ; rdfs:range krr:Statement ;
+  rdfs:label "contradicts"@en .
+
+krr:justifiedBy a owl:ObjectProperty ;
+  rdfs:domain krr:Statement ; rdfs:range krr:Justification ;
+  rdfs:label "justified by"@en .
+
+krr:hasEvidence a owl:ObjectProperty ;
+  rdfs:domain krr:Justification ; rdfs:range krr:Evidence ;
+  rdfs:label "has evidence"@en .
+
+krr:explainedBy a owl:ObjectProperty ;
+  rdfs:domain krr:Statement ; rdfs:range krr:Explanation ;
+  rdfs:label "explained by"@en .
+
+krr:derivedFrom a owl:ObjectProperty ;
+  rdfs:domain krr:Statement ;
+  rdfs:range [ a owl:Class ; owl:unionOf ( krr:Statement krr:Evidence krr:Rule ) ] ;
+  rdfs:label "derived from"@en .
+
+krr:generatedBy a owl:ObjectProperty ;
+  rdfs:domain [ a owl:Class ; owl:unionOf ( krr:Proof krr:Statement ) ] ;
+  rdfs:range  krr:Reasoner ;
+  rdfs:label "generated by"@en .
+
+krr:hasSource a owl:ObjectProperty ;
+  rdfs:domain [ a owl:Class ; owl:unionOf ( krr:Statement krr:Evidence ) ] ;
+  rdfs:range  krr:Source ;
+  rdfs:label "has source"@en .
+
+krr:consistentWith a owl:ObjectProperty , owl:SymmetricProperty ;
+  rdfs:domain krr:KnowledgeBase ; rdfs:range krr:KnowledgeBase ;
+  rdfs:label "consistent with"@en .
+
+krr:usesInferenceRule a owl:ObjectProperty ;
+  rdfs:domain krr:Proof ; rdfs:range krr:InferenceRule ;
+  rdfs:label "uses inference rule"@en .
+
+krr:hasTruthValue a owl:ObjectProperty , owl:FunctionalProperty ;
+  rdfs:domain krr:Statement ; rdfs:range krr:TruthValue ;
+  rdfs:label "has truth value"@en .
+
+######################
+# DATATYPE PROPERTIES#
+######################
+
+krr:hasName a owl:DatatypeProperty ; rdfs:domain owl:Thing ; rdfs:range xsd:string ; rdfs:label "has name"@en .
+
+krr:hasFormula a owl:DatatypeProperty ;
+  rdfs:domain krr:Statement ; rdfs:range xsd:string ;
+  rdfs:label "has formula string"@en ;
+  rdfs:comment "Formula encoded in Manchester OWL, DL syntax, or other notation."@en .
+
+krr:hasQueryString a owl:DatatypeProperty ;
+  rdfs:domain krr:Query ; rdfs:range xsd:string ;
+  rdfs:label "has query string"@en .
+
+krr:timestamp a owl:DatatypeProperty ;
+  rdfs:domain [ a owl:Class ; owl:unionOf ( krr:Evidence krr:Observation ) ] ;
+  rdfs:range xsd:dateTime ;
+  rdfs:label "timestamp"@en .
+
+krr:hasConfidence a owl:DatatypeProperty ;
+  rdfs:domain [ a owl:Class ; owl:unionOf ( krr:Statement krr:Evidence ) ] ;
+  rdfs:range xsd:double ;
+  rdfs:label "has confidence"@en .
+
+krr:hasProbability a owl:DatatypeProperty ;
+  rdfs:domain krr:Statement ; rdfs:range xsd:double ;
+  rdfs:label "has probability"@en ;
+  rdfs:comment "Optional numeric probability for probabilistic reasoning contexts."@en .
+
+krr:hasComplexityNotation a owl:DatatypeProperty ;
+  rdfs:domain krr:Algorithm ; rdfs:range xsd:string ;
+  rdfs:label "has complexity notation"@en ;
+  rdfs:comment "E.g., 'ExpTime-complete', 'PSPACE'."@en .
+
+#############
+# KEY AXIOM #
+#############
+
+# Identify statements by (formula, source) if present
+krr:Statement owl:hasKey ( krr:hasFormula krr:hasSource ) .
+
+######################
+# SOME RESTRICTIONS  #
+######################
+
+krr:Proof rdfs:subClassOf [
+  a owl:Restriction ; owl:onProperty krr:usesInferenceRule ; owl:someValuesFrom krr:InferenceRule
+] .
+
+krr:Reasoner rdfs:subClassOf [
+  a owl:Restriction ; owl:onProperty krr:supportsTask ; owl:allValuesFrom krr:ReasoningTask
+] .
+
+krr:Justification rdfs:subClassOf [
+  a owl:Restriction ; owl:onProperty krr:hasEvidence ; owl:someValuesFrom krr:Evidence
+] .
+
+#########################
+# EXEMPLAR INDIVIDUALS  #
+#########################
+
+# Truth values
+krr:true a krr:TruthValue ; rdfs:label "true"@en .
+krr:false a krr:TruthValue ; rdfs:label "false"@en .
+krr:unknown a krr:TruthValue ; rdfs:label "unknown"@en .
+krr:inconsistent a krr:TruthValue ; rdfs:label "inconsistent"@en .
+
+# Example logic & reasoner
+krr:OWL2DL a krr:Logic ; rdfs:label "OWL 2 DL"@en ;
+  krr:supportsTask krr:Classification, krr:ConsistencyChecking, krr:EntailmentChecking, krr:QueryAnswering, krr:Realization .
+
+krr:GenericReasoner a krr:Reasoner ; rdfs:label "Generic OWL Reasoner"@en ;
+  krr:usesLogic krr:OWL2DL ;
+  krr:performsTask krr:Classification, krr:ConsistencyChecking, krr:EntailmentChecking, krr:QueryAnswering, krr:Realization .
+
+# Domain vocabulary (toy)
+krr:Human a krr:Concept ; rdfs:label "Human"@en .
+krr:Mortal a krr:Concept ; rdfs:label "Mortal"@en .
+krr:socrates a krr:Individual ; rdfs:label "Socrates"@en .
+
+# A simple KB and ontology
+krr:KB_Socrates a krr:KnowledgeBase ; rdfs:label "Socrates KB"@en ;
+  krr:usesLogic krr:OWL2DL .
+
+krr:Ont_Socrates a krr:Ontology ; rdfs:label "Socrates Ontology"@en ;
+  krr:usesVocabulary krr:Vocabulary ;
+  krr:hasAxiom krr:A1 .
+
+# Axioms & facts as statements
+krr:A1 a krr:Axiom ; rdfs:label "All humans are mortal"@en ;
+  krr:hasFormula "Human ⊑ Mortal" ;
+  krr:hasTruthValue krr:true .
+
+krr:F1 a krr:Fact ; rdfs:label "Socrates is a human"@en ;
+  krr:hasFormula "ClassAssertion(Human socrates)" ;
+  krr:hasTruthValue krr:true .
+
+# Derived claim and its justification
+krr:C1 a krr:Claim ; rdfs:label "Socrates is mortal"@en ;
+  krr:hasFormula "ClassAssertion(Mortal socrates)" ;
+  krr:entails krr:C1 ;  # reflexive entailment can be explicit if desired
+  krr:derivedFrom krr:A1, krr:F1 ;
+  krr:generatedBy krr:GenericReasoner ;
+  krr:justifiedBy krr:J1 ;
+  krr:hasTruthValue krr:true .
+
+krr:J1 a krr:Justification ; rdfs:label "Justification for C1"@en ;
+  krr:hasEvidence krr:E1 ;
+  krr:usesInferenceRule krr:IR_Subsumption .
+
+krr:E1 a krr:Evidence ; rdfs:label "Entailment proof sketch"@en ;
+  krr:timestamp "2025-09-14T00:00:00Z"^^xsd:dateTime ;
+  krr:hasConfidence 0.99 .
+
+krr:IR_Subsumption a krr:InferenceRule ; rdfs:label "Subsumption"@en .
+
