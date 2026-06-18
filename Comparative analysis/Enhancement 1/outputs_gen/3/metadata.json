@@ -1,0 +1,20 @@
+{
+  "seed": 42,
+  "actions": [
+    "sleep_early",
+    "walk_30",
+    "eat_veg_400",
+    "no_tobacco_alcohol",
+    "meditate_10",
+    "drink_water_8"
+  ],
+  "WHO": {
+    "sleep_min": 7.0,
+    "sleep_max": 9.0,
+    "activity_min": 30,
+    "diet_fv_min": 400,
+    "habit_abstain": 1,
+    "water_glasses": 8
+  },
+  "notes": "Use rl_actors_analysis.py to read these CSVs and run RL actors."
+}
