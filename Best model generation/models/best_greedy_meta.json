@@ -1,0 +1,14 @@
+{
+  "policy": "greedy_immediate_r_eff",
+  "ACTIONS": [
+    "sleep_early",
+    "walk_30",
+    "eat_veg_400",
+    "no_tobacco_alcohol",
+    "meditate_10",
+    "drink_water_8"
+  ],
+  "params": {
+    "samples_per_action": 10
+  }
+}
